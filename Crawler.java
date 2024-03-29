@@ -1,10 +1,14 @@
+import java.io.IOException;
 import java.util.*;
+
+import org.htmlparser.beans.FilterBean;
 import org.htmlparser.beans.StringBean;
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.AndFilter;
 import org.htmlparser.filters.NodeClassFilter;
+import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
@@ -22,6 +26,9 @@ import com.mongodb.client.result.InsertOneResult;
 import static com.mongodb.client.model.Filters.eq;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.net.URL;
+import java.net.URLConnection;
+
 
 
 public class Crawler {
@@ -46,33 +53,60 @@ public class Crawler {
         }
     }
 
-    public Vector<String> extractLinks() throws ParserException{
+    public void extractLinks() throws ParserException, IOException {
         Vector<String> linkExtracted = new Vector<String>();  //Vector storing the url extracted
-        LinkBean lb = new LinkBean();
-        int numFileCrawled = 0;
+        LinkBean lb = new LinkBean();                         //Create the LinkBean object
+        int numFileCrawled = 0;                               //Number of file used
 
 
-        while(urlQueue.peek() != null) {
-            lb.setURL(urlQueue.poll());
-            URL[] urlArray = lb.getLinks();
-            for(int i = 0; i < urlArray.length && numFileCrawled< crawlDepth; i++){
-                String retrievedURL = urlArray[i].toString();
-                if(!urlSet.contains(retrievedURL)) { //condition going to be refactored (use for testing only)
-                    System.out.println(pageInfo.countDocuments(new Document("URL", retrievedURL)));
-                    if(pageInfo.countDocuments(new Document("URL", retrievedURL)) == 0) { //Check
-                        pageInfo.insertOne(new Document()
-                                .append("PageID", numFileCrawled)
-                                .append("URL", retrievedURL)
-                                .append("LastCrawledDate", formattedDateTime));
-                    }
-                    numFileCrawled++;
-                    urlSet.add(retrievedURL);
-                    linkExtracted.add(retrievedURL);
-                    urlQueue.add(retrievedURL);
-                }
+        while(urlQueue.peek() != null && numFileCrawled < crawlDepth) {
+            String currentRetrievedURL = urlQueue.poll();               //URL to crawl
+            lb.setURL(currentRetrievedURL);                             //Set the url of the LinkBean
+            URL[] urlArray = lb.getLinks();                             //Get the links from the url
+            String[] urlStringArray = new String[urlArray.length];      //Change the url to strings
+            for(int i = 0; i < urlArray.length; i++){                   //Add them to the url queue
+                urlStringArray[i] = urlArray[i].toString();
+                urlQueue.add(urlStringArray[i]);
             }
+            if(!urlSet.contains(currentRetrievedURL)){
+                numFileCrawled++;
+                urlSet.add(currentRetrievedURL);
+                linkExtracted.add(currentRetrievedURL);
+            }
+            if(pageInfo.countDocuments(new Document("URL", currentRetrievedURL)) == 0){  //Check if the currentRetrievedURL is in the db or not
+                StringBean sb = new StringBean();                           //Create the StringBean object
+                sb.setURL(currentRetrievedURL);                             //Set the url of the StringBean
+                sb.setLinks(false);                                         //Should not crawl the links
+                StringTokenizer st = new StringTokenizer(sb.getStrings());
+                Vector<String> wordExtracted = new Vector<String>();
+                while(st.hasMoreTokens()){
+                    wordExtracted.add(st.nextToken());
+                }
+
+                FilterBean fb = new FilterBean();                          //Create the FilterBean object
+                fb.setURL(currentRetrievedURL);                            //Set the url for the FilterBean
+                fb.setFilters(new NodeFilter[]{new TagNameFilter("Title")});    //Want to crawl the element inside <title> tag
+
+                URL url = new URL(currentRetrievedURL);                         //Get the last modified date of the web page
+                URLConnection connection = url.openConnection();
+                String lastModified = connection.getHeaderField("Last-Modified");
+                if(lastModified == null){
+                    lastModified = connection.getDate() + "";
+                }
+
+                pageInfo.insertOne(new Document()                               //Insert into the mongoDB database
+                        .append("PageID", numFileCrawled)
+                        .append("URL", currentRetrievedURL)
+                        .append("Title", fb.getText())
+                        .append("lastModifiedDate", lastModified)
+                        .append("PageSize", wordExtracted.size())
+                        .append("LastCrawledDate", formattedDateTime)
+                        .append("ChildLink", Arrays.asList(urlStringArray)));;
+            }
+
+
         }
-        return linkExtracted;
+
     }
     public static void main (String[] args)
     {
@@ -81,13 +115,9 @@ public class Crawler {
             String testURL = "https://www.cse.ust.hk/~kwtleung/COMP4321/testpage.htm";
             Crawler crawler = new Crawler(testURL, 30);
 
-            Vector<String> links = crawler.extractLinks();
-            System.out.println("Links in "+testURL+":");
-            for(int i = 0; i < links.size(); i++)
-                System.out.println(links.get(i));
-            System.out.println("");
+            crawler.extractLinks();
 
-        } catch (ParserException e)
+        } catch (ParserException | IOException e)
         {
             e.printStackTrace ();
         }
