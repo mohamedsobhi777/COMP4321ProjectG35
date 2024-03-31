@@ -107,18 +107,49 @@ public class Crawler {
                 Indexer pageIndexer = new Indexer(currentRetrievedURL);
                 pageIndexer.extractWords();
 
-                PrintWriter writer = new PrintWriter(new FileWriter("output.txt"));
-                //Outputting of the crawling result
-                writer.println(currentRetrievedURL);
-                writer.println(fb.getText());
-                writer.println(lastModified+ ", " + wordExtracted.size());
+                try{
+                    FileWriter writer = new FileWriter("spider_result.txt");
+                    //Outputting of the crawling result
+                    writer.write(currentRetrievedURL);
+                    writer.write(fb.getText());
+                    writer.write(lastModified+ ", " + wordExtracted.size());
 
+                    // Write the word frequencies to the file
+                    StringBuilder frequencyBuilder = new StringBuilder();
+                    for (Map.Entry<String, Posting> entry : pageIndexer.combinedFrequencyMap.entrySet()) {
+                        frequencyBuilder.append(entry.getKey()).append(" ").append(entry.getValue().getTermFrequency()).append("; ");
+                    }
+                    writer.write(frequencyBuilder.toString().trim());
 
-                for(int i = 0; i <urlStringArray.length && i < 10; i++){
-                    writer.print(urlStringArray[i] + " ");
+                    for(int i = 0; i <urlStringArray.length && i < 10; i++){
+                        writer.write("Child " + urlStringArray[i]);
+                    }
+                    writer.write("---------------------------------");
+                    writer.flush();
+                    writer.close();
+                }catch (IOException e){
+                    System.out.println("An error occurred.");
+                    e.printStackTrace();
                 }
-                writer.println();
-                writer.println("---------------------------------");
+
+
+
+                // Print the crawling result
+//                System.out.println(fb.getText());
+//                System.out.println(currentRetrievedURL);
+//                System.out.println(lastModified + ", " + wordExtracted.size());
+
+//                Print the word frequencies
+//                StringBuilder frequencyBuilder = new StringBuilder();
+//                for (Map.Entry<String, Posting> entry : pageIndexer.combinedFrequencyMap.entrySet()) {
+//                    frequencyBuilder.append(entry.getKey()).append(" ").append(entry.getValue().getTermFrequency()).append("; ");
+//                }
+//                System.out.println(frequencyBuilder.toString().trim());
+//
+//                for (int i = 0; i < urlStringArray.length && i < 10; i++) {
+//                    System.out.println("Child " + urlStringArray[i]);
+//                }
+//                System.out.println("---------------------------------");
             }
 
 
