@@ -107,12 +107,15 @@ public class Crawler {
                 Indexer pageIndexer = new Indexer(currentRetrievedURL);
                 pageIndexer.extractWords();
 
-                try{
-                    FileWriter writer = new FileWriter("spider_result.txt");
+                try {
+                    FileWriter writer = new FileWriter("spider_result.txt", true); // Append mode
                     //Outputting of the crawling result
-                    writer.write(currentRetrievedURL);
                     writer.write(fb.getText());
-                    writer.write(lastModified+ ", " + wordExtracted.size());
+                    writer.write(System.lineSeparator()); // Add a new line
+                    writer.write(currentRetrievedURL);
+                    writer.write(System.lineSeparator()); // Add a new line
+                    writer.write(lastModified + ", " + wordExtracted.size());
+                    writer.write(System.lineSeparator()); // Add a new line
 
                     // Write the word frequencies to the file
                     StringBuilder frequencyBuilder = new StringBuilder();
@@ -120,14 +123,17 @@ public class Crawler {
                         frequencyBuilder.append(entry.getKey()).append(" ").append(entry.getValue().getTermFrequency()).append("; ");
                     }
                     writer.write(frequencyBuilder.toString().trim());
+                    writer.write(System.lineSeparator()); // Add a new line
 
-                    for(int i = 0; i <urlStringArray.length && i < 10; i++){
-                        writer.write("Child " + urlStringArray[i]);
+                    for (int i = 0; i < urlStringArray.length && i < 10; i++) {
+                        writer.write(urlStringArray[i]);
+                        writer.write(System.lineSeparator()); // Add a new line
                     }
                     writer.write("---------------------------------");
+                    writer.write(System.lineSeparator()); // Add a new line
                     writer.flush();
                     writer.close();
-                }catch (IOException e){
+                } catch (IOException e) {
                     System.out.println("An error occurred.");
                     e.printStackTrace();
                 }
