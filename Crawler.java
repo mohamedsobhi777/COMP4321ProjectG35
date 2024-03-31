@@ -73,7 +73,7 @@ public class Crawler {
                 urlSet.add(currentRetrievedURL);
                 linkExtracted.add(currentRetrievedURL);
             }
-            if(pageInfo.countDocuments(new Document("URL", currentRetrievedURL)) == 0){  //Check if the currentRetrievedURL is in the db or not
+            if(pageInfo.countDocuments(new Document("_id", currentRetrievedURL)) == 0){  //Check if the currentRetrievedURL is in the db or not
                 StringBean sb = new StringBean();                           //Create the StringBean object
                 sb.setURL(currentRetrievedURL);                             //Set the url of the StringBean
                 sb.setLinks(false);                                         //Should not crawl the links
