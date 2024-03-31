@@ -17,7 +17,7 @@ import java.util.Vector;
 
 public class Indexer {
     private String url; // The url that are going to perform inverted index and forward index operation
-    private static final String uri = "mongodb+srv://chhuiwork:COMP4321haha@cluster0.mncnodn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+    private static final String uri = testProgram.database;
 
     private MongoClient mongoClient = MongoClients.create(uri);
     private MongoDatabase database = mongoClient.getDatabase("COMP4321");
@@ -123,7 +123,7 @@ public class Indexer {
             String stemmedWord = entry.getKey();
             Posting termInfo = entry.getValue();
             int termFrequency = termInfo.getTermFrequency();
-            System.out.println(stemmedWord + ": " + termFrequency);
+            //System.out.println(stemmedWord + ": " + termFrequency);
         }
 
         System.out.println("\nBody Frequency Map:");
@@ -131,7 +131,7 @@ public class Indexer {
             String stemmedWord = entry.getKey();
             Posting termInfo = entry.getValue();
             int termFrequency = termInfo.getTermFrequency();
-            System.out.println(stemmedWord + ": " + termFrequency);
+//           System.out.println(stemmedWord + ": " + termFrequency);
         }
 
         // Add entries to the inverted index collection
@@ -146,10 +146,10 @@ public class Indexer {
         try {
             String testURL = "https://www.cse.ust.hk/~kwtleung/COMP4321/ust_cse/PG.htm";
             Indexer invertedIndex = new Indexer(testURL);
-            System.out.println("Starting from main: ");
+//            System.out.println("Starting from main: ");
             invertedIndex.extractWords();
         } catch (ParserException e) {
-            System.err.println(e.toString());
+//            System.err.println(e.toString());
 
         }
     }

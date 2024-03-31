@@ -28,7 +28,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.net.URL;
 import java.net.URLConnection;
-
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 
 public class Crawler {
@@ -42,7 +44,7 @@ public class Crawler {
     private String formattedDateTime = LocalDateTime.now().format(formatter);
 
     //Data member for interacting with the database
-    private static final String uri = "mongodb+srv://chhuiwork:COMP4321haha@cluster0.mncnodn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+    private static final String uri = testProgram.database;
     private MongoClient mongoClient = MongoClients.create(uri);
     private MongoDatabase database = mongoClient.getDatabase("COMP4321");
     private MongoCollection<Document> pageInfo = database.getCollection("pageInfo");
@@ -95,8 +97,8 @@ public class Crawler {
                 }
 
                 pageInfo.insertOne(new Document()                               //Insert into the mongoDB database
-                        .append("_id", currentRetrievedURL)
                         .append("Title", fb.getText())
+                        .append("_id", currentRetrievedURL)
                         .append("lastModifiedDate", lastModified)
                         .append("PageSize", wordExtracted.size())
                         .append("LastCrawledDate", formattedDateTime)
@@ -104,6 +106,19 @@ public class Crawler {
 
                 Indexer pageIndexer = new Indexer(currentRetrievedURL);
                 pageIndexer.extractWords();
+
+                PrintWriter writer = new PrintWriter(new FileWriter("output.txt"));
+                //Outputting of the crawling result
+                writer.println(currentRetrievedURL);
+                writer.println(fb.getText());
+                writer.println(lastModified+ ", " + wordExtracted.size());
+
+
+                for(int i = 0; i <urlStringArray.length && i < 10; i++){
+                    writer.print(urlStringArray[i] + " ");
+                }
+                writer.println();
+                writer.println("---------------------------------");
             }
 
 
