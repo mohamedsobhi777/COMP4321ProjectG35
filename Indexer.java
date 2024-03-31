@@ -24,6 +24,9 @@ public class Indexer {
     private MongoCollection<org.bson.Document> invertedTableBody = database.getCollection("invertedTableBody");
     private MongoCollection<org.bson.Document> invertedTableTitle = database.getCollection("invertedTableTitle");
     private MongoCollection<org.bson.Document> forwardTable = database.getCollection("forwardTable");
+    private Map<String, Posting> titleFrequencyMap;
+    private Map<String, Posting> bodyFrequencyMap;
+    public Map<String, Posting> combinedFrequencyMap;
 
     Indexer(String _url) {
         url = _url;
@@ -41,7 +44,7 @@ public class Indexer {
             st = new StringTokenizer(fb.getText()); // Tokenize the content
         } else {
             sb.setURL(url);
-            sb.setLinks (false);
+            sb.setLinks(false);
             String s = sb.getStrings();
             st = new StringTokenizer(s);
         }
@@ -112,33 +115,47 @@ public class Indexer {
 
     }
 
+    private Map<String, Posting> createCombineFrequencyMaps(Map<String, Posting> map1, Map<String, Posting> map2) {
+        Map<String, Posting> combinedMap = new HashMap<>(map2);
+        for (Map.Entry<String, Posting> entry : map1.entrySet()) {
+            String word = entry.getKey();
+            Posting posting = entry.getValue();
+            Posting existingPosting = combinedMap.get(word);
+            if (existingPosting == null) {
+                combinedMap.put(word, posting);
+            } else {
+                existingPosting.incrementTermFrequency();
+            }
+        }
+        return combinedMap;
+    }
+
     public void extractWords() throws ParserException {
 
         // Extract words and create frequency maps for title and body
-        Map<String, Posting> titleFrequencyMap = extractWordsAndCreateFrequencyMap(url, true);
-        Map<String, Posting> bodyFrequencyMap = extractWordsAndCreateFrequencyMap(url, false);
+        titleFrequencyMap = extractWordsAndCreateFrequencyMap(url, true);
+        bodyFrequencyMap = extractWordsAndCreateFrequencyMap(url, false);
 
-        System.out.println("Title Frequency Map:");
-        for (Map.Entry<String, Posting> entry : titleFrequencyMap.entrySet()) {
-            String stemmedWord = entry.getKey();
-            Posting termInfo = entry.getValue();
-            int termFrequency = termInfo.getTermFrequency();
-            //System.out.println(stemmedWord + ": " + termFrequency);
-        }
-
-        System.out.println("\nBody Frequency Map:");
-        for (Map.Entry<String, Posting> entry : bodyFrequencyMap.entrySet()) {
-            String stemmedWord = entry.getKey();
-            Posting termInfo = entry.getValue();
-            int termFrequency = termInfo.getTermFrequency();
+//        System.out.println("Title Frequency Map:");
+//        for (Map.Entry<String, Posting> entry : titleFrequencyMap.entrySet()) {
+//            String stemmedWord = entry.getKey();
+//            Posting termInfo = entry.getValue();
+//            int termFrequency = termInfo.getTermFrequency();
+//            System.out.println(stemmedWord + ": " + termFrequency);
+//        }
+//
+//        System.out.println("\nBody Frequency Map:");
+//        for (Map.Entry<String, Posting> entry : bodyFrequencyMap.entrySet()) {
+//            String stemmedWord = entry.getKey();
+//            Posting termInfo = entry.getValue();
+//            int termFrequency = termInfo.getTermFrequency();
 //           System.out.println(stemmedWord + ": " + termFrequency);
-        }
-
+//        }
         // Add entries to the inverted index collection
         addToInvertedIndex(invertedTableTitle, titleFrequencyMap, true);
         addToInvertedIndex(invertedTableBody, bodyFrequencyMap, false);
         addToForwardIndex(forwardTable, titleFrequencyMap, bodyFrequencyMap);
-
+        combinedFrequencyMap = createCombineFrequencyMaps(titleFrequencyMap, bodyFrequencyMap);
 
     }
 
