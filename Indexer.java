@@ -5,6 +5,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOptions;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.beans.FilterBean;
+import org.htmlparser.beans.StringBean;
 import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.util.ParserException;
 
@@ -31,15 +32,20 @@ public class Indexer {
     private Map<String, Posting> extractWordsAndCreateFrequencyMap(String url, boolean isTitle) throws ParserException {
         Map<String, Posting> frequencyMap = new HashMap<>(); // initialize a frequency map to keep track of word to frequency of a file
 
+        StringBean sb = new StringBean(); // Create string bean object
         FilterBean fb = new FilterBean();  //Create the FilterBean object
-        fb.setURL(url); // Set the url for the FilterBean
+        StringTokenizer st;
         if (isTitle) { // Identify which inverted index that are being created
+            fb.setURL(url); // Set the url for the FilterBean
             fb.setFilters(new NodeFilter[]{new TagNameFilter("Title")});
+            st = new StringTokenizer(fb.getText()); // Tokenize the content
         } else {
-            fb.setFilters(new NodeFilter[]{new TagNameFilter("Body")});
+            sb.setURL(url);
+            sb.setLinks (false);
+            String s = sb.getStrings();
+            st = new StringTokenizer(s);
         }
 
-        StringTokenizer st = new StringTokenizer(fb.getText()); // Tokenize the content
         StopStem stopStem = new StopStem("stopwords.txt"); //initialize stop word file
         String input = ""; // initialize input variable
 
@@ -47,10 +53,16 @@ public class Indexer {
             input = st.nextToken();
             if (!stopStem.isStopWord(input)) { // Stop word check, dump away if it is stop word
                 String stemmedWord = stopStem.stem(input); // stemming the word with porter's algorithm
+
+//                System.out.println("Stemmed version of \"" + input + "\" is: " + stemmedWord);
+
                 Posting postingInfo = frequencyMap.getOrDefault(stemmedWord, new Posting()); // Create and entry if the word does not exist or get the Map if the date exist
                 postingInfo.incrementTermFrequency(); // increment the word frequency
                 frequencyMap.put(stemmedWord, postingInfo); // put the posting information to frequency map
             }
+//            else {
+//                System.out.println("Stop word filter out: " + input);
+//            }
 
         }
         return frequencyMap;
