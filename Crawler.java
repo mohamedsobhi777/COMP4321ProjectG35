@@ -95,13 +95,15 @@ public class Crawler {
                 }
 
                 pageInfo.insertOne(new Document()                               //Insert into the mongoDB database
-                        .append("PageID", numFileCrawled)
-                        .append("URL", currentRetrievedURL)
+                        .append("_id", currentRetrievedURL)
                         .append("Title", fb.getText())
                         .append("lastModifiedDate", lastModified)
                         .append("PageSize", wordExtracted.size())
                         .append("LastCrawledDate", formattedDateTime)
                         .append("ChildLink", Arrays.asList(urlStringArray)));;
+
+                Indexer pageIndexer = new Indexer(currentRetrievedURL);
+                pageIndexer.extractWords();
             }
 
 
