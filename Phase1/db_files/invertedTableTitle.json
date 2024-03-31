@@ -1,0 +1,805 @@
+[{
+  "_id": "test",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/testpage.htm",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "page",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/testpage.htm",
+      "termFrequency": 1
+    },
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie.htm",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "cse",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/ust_cse.htm",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "hkust",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/ust_cse.htm",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "depart",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/ust_cse.htm",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "new",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/news.htm",
+      "termFrequency": 1
+    },
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/news/bbc.htm",
+      "termFrequency": 1
+    },
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/news/cnn.htm",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "book",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/books.htm",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "movi",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie.htm",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "index",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie.htm",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "pg",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/ust_cse/PG.htm",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "ug",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/ust_cse/UG.htm",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "bbc",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/news/bbc.htm",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "cnn",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/news/cnn.htm",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "book1",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/books/book1.htm",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "book2",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/books/book2.htm",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "book3",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/books/book3.htm",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "planet",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/1.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "2003",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/1.html",
+      "termFrequency": 1
+    },
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/13.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "dinosaur",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/1.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "tt",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/2.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "isl",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/2.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "2004",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/2.html",
+      "termFrequency": 2
+    },
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/5.html",
+      "termFrequency": 1
+    },
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/8.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "review",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/2.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "man",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/2.html",
+      "termFrequency": 1
+    },
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/7.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "charact",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/3.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "1997",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/3.html",
+      "termFrequency": 1
+    },
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/6.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "paula",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/4.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "1994",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/4.html",
+      "termFrequency": 1
+    },
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/18.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "get",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/4.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "up",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/4.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "danc",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/4.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "abdul",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/4.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "the",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/5.html",
+      "termFrequency": 1
+    },
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/13.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "fall",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/5.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "ecw",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/5.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "rise",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/5.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "sick",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/6.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "1992",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/7.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "8",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/7.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/8.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "what",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/8.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "know",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/8.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "do",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/8.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "we",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/8.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "nuke",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/9.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "high",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/9.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "2",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/9.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "1991",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/9.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "em",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/9.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "class",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/9.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "2001",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/10.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "fighter",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/10.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "short",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/11.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "documentari",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/11.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "full",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/11.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "frame",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/11.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "1999",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/11.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "brunett",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/12.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "my",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/12.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "1947",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/12.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "favorit",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/12.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "extend",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/13.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "materi",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/13.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "ring",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/13.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "king",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/13.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "lord",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/13.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "edition",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/13.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "bonu",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/13.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "return",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/13.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "natur",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/14.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "1982",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/14.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "antarctica",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/14.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "diamond",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/15.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "hit",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/15.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "neil",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/15.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "live",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/15.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "greatest",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/15.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "1988",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/15.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "1996",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/16.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "screamer",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/16.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "2005",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/17.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "7",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/17.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "second",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/17.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "belov",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/18.html",
+      "termFrequency": 1
+    }
+  ]
+},
+{
+  "_id": "immort",
+  "postingList": [
+    {
+      "docId": "https://www.cse.ust.hk/~kwtleung/COMP4321/Movie/18.html",
+      "termFrequency": 1
+    }
+  ]
+}]
