@@ -13,3 +13,27 @@ datasource db {
   url      = env("DATABASE_URL")
   relationMode = "prisma"
 }
+
+model forwardTable {
+  id String @id @map("_id")
+  postingList Json[]
+}
+
+model invertedTableBody {
+  id String @id @map("_id")
+  postingList Json[]
+}
+
+model invertedTableTitle {
+  id String @id @map("_id")
+  postingList Json[]
+}
+
+model pageInfo {
+  id String @id @map("_id")
+  Title String
+  lastModifiedDate DateTime
+  PageSize Int
+  LastCrawledDate DateTime
+  ChildLink String[]
+}

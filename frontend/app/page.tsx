@@ -1,3 +1,4 @@
+'use client';
 /**
  * v0 by Vercel.
  * @see https://v0.dev/t/lXxx5Sziyvd
@@ -6,31 +7,105 @@
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
-
+import { SearchTermType, searchTermSchema } from "@/schemas"
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { searchAction } from "@/actions/searchAction";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import SearchResultCard from "@/components/search-results";
 export default function Component() {
+
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | undefined>();
+  const [results, setResults] = useState<any[]>([]);
+  const form = useForm<SearchTermType>({
+    resolver: zodResolver(searchTermSchema),
+    defaultValues: {
+      query: ""
+    },
+  });
+
+  const onSubmit = (values: SearchTermType) => {
+    startTransition(() => {
+      searchAction(values)
+        .then((data) => {
+          if (data.error) {
+            setError(data.error);
+          }
+          if (data.result) {
+            // toast.success(data.success)
+            setResults(data.result);
+            setError(undefined)
+            // router.push("/profile")
+          }
+        })
+        .catch(() => setError("Something went wrong!"));
+    });
+  };
   return (
     <div className="flex flex-col items-center justify-center w-full min-h-[400px] px-4">
 
       <h1 className="py-6 text-2xl">
         COMP4321 Search Engine
       </h1>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)} className="max-w-2xl mx-auto w-full">
+          <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+          <div className=" flex flex-row gap-2 items-center">
 
-      <form className="max-w-2xl mx-auto w-full">
-        <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-        <div className="relative">
-          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <Search className="text-white" />
+
+            <FormField
+              name="query"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="flex-grow">
+                  {/* <FormLabel>Search </FormLabel> */}
+                  <FormControl>
+                    <Input
+                      disabled={isPending}
+                      placeholder="Search..."
+                      {...field}
+                      className="block p-4 text-sm border border-gray-300 rounded-lg text-white"
+                    />
+                  </FormControl>
+                  {/* <FormDescription>
+                    This is the title of your artwork
+                  </FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" disabled={isPending} className="text-white bg-black text-sm px-4 h-full border-2 border-black">
+              <Search className="" />
+            </Button>
           </div>
-          <input
-            type="search"
-            id="default-search"
-            className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search..."
-            required
-          />
-          <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+        </form>
+      </Form>
+
+      <div className="flex flex-col py-4">
+        <div>
+          Results
         </div>
-      </form>
+
+        <div className="flex flex-col gap-4">
+          {results[0]?.postingList.map((result: any, i: number) => (
+            <SearchResultCard
+              key={i}
+              data={result}
+            />
+          ))}
+        </div>
+      </div>
 
     </div>
   )
