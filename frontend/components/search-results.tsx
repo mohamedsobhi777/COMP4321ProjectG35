@@ -7,13 +7,15 @@ import { cn } from '@/lib/utils';
 import { ExternalLink, LinkIcon } from 'lucide-react';
 import { pageInfo } from '@prisma/client';
 import { clampText } from '@/lib/text';
+import { TermType } from '@/actions/searchAction';
 // import { scoreToColor } from '@/lib/color';
 
 type Props = {
     data: {
         id: string;
         score: number;
-        pageInfo: pageInfo
+        pageInfo: pageInfo;
+        keywords: TermType[];
     };
 }
 
@@ -138,21 +140,17 @@ const SearchResultCard = ({ data }: Props) => {
                                 {clampText(data.pageInfo.Title, 64)} <ExternalLink className="w-4 h-4" />
                             </Link>
                         </h2>
-                        {/* <div className="mb-2">
-                            Top (non-stop) words:
-                            <a href="#" className="text-sm text-gray-600 p-1 hover:text-black">
-                                <span className="text-opacity-50">#</span>
-                                react
-                            </a>
-                            <a href="#" className="text-sm text-gray-600 p-1 hover:text-black">
-                                <span className="text-opacity-50">#</span>
-                                javascript
-                            </a>
-                            <a href="#" className="text-sm text-gray-600 p-1 hover:text-black">
-                                <span className="text-opacity-50">#</span>
-                                tailwind
-                            </a>
-                        </div> */}
+                        Keywords (max 5):
+                        <div className="mb-2">
+                            {
+                                data.keywords.map(keyword => (
+                                    <span key={keyword.wordId} className="text-sm text-gray-600 p-1 hover:text-black">
+                                        <span className="text-opacity-50">#</span>
+                                        {keyword.wordId}({keyword.termFrequency})
+                                    </span>
+                                ))
+                            }
+                        </div>
                         {/* <div className="mb-1 leading-6">…base;
                             @<mark>tailwind</mark> components;
                             @<mark>tailwind</mark> utilities;
@@ -166,11 +164,6 @@ const SearchResultCard = ({ data }: Props) => {
                                     </svg>
                                     195<span className="hidden md:inline">&nbsp;reactions</span>
                                 </a> */}
-                                <a href="#" className="flex items-center gap-1 py-1 pl-1 pr-2 text-gray-600 text-sm rounded hover:bg-gray-100 hover:text-black">
-
-                                    <LinkIcon className='w-4 h-4' />
-                                    {data.pageInfo.ChildLink.length}<span className="hidden md:inline">&nbsp;child links</span>
-                                </a>
                             </div>
                             <div className="flex items-center">
                                 <small className="mr-2 text-gray-600"> {data.pageInfo.PageSize} words</small>
@@ -181,6 +174,26 @@ const SearchResultCard = ({ data }: Props) => {
                         </div>
                     </div>
                 </div>
+                <span className="flex w-fit rounded-lg hover:cursor-pointer items-center gap-1 py-1 pl-1 pr-2 text-gray-600 text-sm rounded hover:bg-gray-100 hover:text-black">
+                    <LinkIcon className='w-4 h-4' />
+                    {data.pageInfo.ChildLink.length}<span className="hidden md:inline">&nbsp;child links</span>
+                </span>
+
+                <ul className='space-y-2'>
+                    {
+                        data.pageInfo.ChildLink.map(childPage => (
+                            <li key={childPage}>
+                                <Link target='_blank' href={childPage} className='hover:underline'>
+                                    {childPage}
+                                </Link>
+                            </li>
+                        ))
+                    }
+                    <li>
+
+                    </li>
+                </ul>
+
                 <p className="text-xs text-gray-600 hover:text-black">
                     last modified:  {data.pageInfo.lastModifiedDate}
                 </p>

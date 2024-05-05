@@ -1,3 +1,5 @@
+
+// deprecated
 import { db } from "@/lib/db";
 
 export const getTermInPageBody = async (searchTerm: string) => {

@@ -2,6 +2,7 @@
 
 import { getAllDocs } from "@/data/docs";
 import { getTermInPageBody } from "@/data/searchTerm";
+import { getMostFrequentTerms } from "@/lib/text";
 import { parseTokens } from "@/lib/token";
 import { SearchTermType, searchTermSchema } from "@/schemas";
 import { document } from "postcss";
@@ -11,7 +12,7 @@ export type TermType = {
     termFrequency: number;
 };
 
-type Document = {
+export type Document = {
     id: string;
     postingList: TermType[];
     pageInfo: any;
@@ -21,6 +22,7 @@ type ScoredDocument = {
     id: string;
     score: number;
     pageInfo: any;
+    keywords: TermType[];
 };
 
 function calculateTermFrequencies(terms: string[]): Map<string, number> {
@@ -71,7 +73,7 @@ function calculateCosineSimilarity(
 
 function vectorSpaceModel(
     queryTerms: string[],
-    documents: Document[]
+    documents: any[]
 ): ScoredDocument[] {
     console.log(documents[0].pageInfo);
     // Calculate term frequencies for the query
@@ -100,6 +102,7 @@ function vectorSpaceModel(
             id: documentId,
             score: cosineSimilarity,
             pageInfo: document.pageInfo,
+            keywords: getMostFrequentTerms(document),
         });
     });
 
@@ -116,24 +119,18 @@ export const searchAction = async (values: SearchTermType) => {
         return { error: "Search term can't be empty" };
     }
 
-    const { query: searchQuery } = validatedFields.data;
-    const tokens = parseTokens(searchQuery);
-    const allDocs = (await getAllDocs()) || [];
-
-    // @ts-ignore
-    const results = vectorSpaceModel(tokens, allDocs).filter(
-        (result) => result.score > 0
-    );
-
-    console.log("res::", results);
-
-    if (allDocs.length) {
-        // console.log(allDocs[0]);
-    }
-    return { results: results || [] };
     try {
-        const relevantPages = await getTermInPageBody(searchQuery);
-        return { result: relevantPages };
+        const { query: searchQuery } = validatedFields.data;
+        // TODO: stem the keywords
+        const tokens = parseTokens(searchQuery);
+        const allDocs = (await getAllDocs()) || [];
+
+        const results = vectorSpaceModel(tokens, allDocs).filter(
+            (result) => result.score > 0
+        );
+
+        // console.log("res::", results);
+        return { results: results.slice(0, 50) || [] };
     } catch (e) {
         return { error: "Something went wrong!" };
     }
