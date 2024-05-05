@@ -24,5 +24,7 @@ export function parseTokens(input: string): string[] {
         tokens.push(currentToken);
     }
 
-    return tokens;
+    const normalizedTokens = tokens.map((token) => token.toLowerCase());
+
+    return normalizedTokens;
 }

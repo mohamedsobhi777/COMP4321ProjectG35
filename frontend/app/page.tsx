@@ -111,7 +111,7 @@ export default function Component() {
         <div>
           {results.length} Results
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 w-full">
           {results.map((result) => (
             <SearchResultCard
               key={result.id}
