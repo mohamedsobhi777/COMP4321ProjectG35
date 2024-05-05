@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
 import { SearchTermType, searchTermSchema } from "@/schemas"
-import { useState, useTransition } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { searchAction } from "@/actions/searchAction";
@@ -22,20 +22,28 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import SearchResultCard from "@/components/search-results";
+import { useRouter, useSearchParams } from "next/navigation";
 export default function Component() {
 
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>();
   const [results, setResults] = useState<any[]>([]);
+
+  const searchParams = useSearchParams()
+  const router = useRouter();
+  const query = searchParams.get('query') || ""
+
   const form = useForm<SearchTermType>({
     resolver: zodResolver(searchTermSchema),
     defaultValues: {
-      query: ""
+      query
     },
   });
 
   const onSubmit = (values: SearchTermType) => {
+
     startTransition(() => {
+      router.replace(`/?query=${values.query}`, { scroll: false });
       searchAction(values)
         .then((data) => {
           if (data.error) {
@@ -51,6 +59,13 @@ export default function Component() {
         .catch(() => setError("Something went wrong!"));
     });
   };
+
+  useEffect(() => {
+    if (query.length > 0) {
+      onSubmit({ query });
+    }
+  }, [])
+
   return (
     <div className="flex flex-col items-center justify-center w-full min-h-[400px] px-4">
 
