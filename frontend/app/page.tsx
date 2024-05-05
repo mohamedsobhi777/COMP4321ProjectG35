@@ -41,9 +41,9 @@ export default function Component() {
           if (data.error) {
             setError(data.error);
           }
-          if (data.result) {
+          if (data.results) {
             // toast.success(data.success)
-            setResults(data.result);
+            setResults(data.results);
             setError(undefined)
             // router.push("/profile")
           }
@@ -94,13 +94,12 @@ export default function Component() {
 
       <div className="flex flex-col py-4">
         <div>
-          Results
+          {results.length} Results
         </div>
-
         <div className="flex flex-col gap-4">
-          {results[0]?.postingList.map((result: any, i: number) => (
+          {results.map((result) => (
             <SearchResultCard
-              key={i}
+              key={result.id}
               data={result}
             />
           ))}
