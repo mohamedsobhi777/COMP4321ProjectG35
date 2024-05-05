@@ -4,6 +4,7 @@ import { getAllDocs } from "@/data/docs";
 import { getTermInPageBody } from "@/data/searchTerm";
 import { parseTokens } from "@/lib/token";
 import { SearchTermType, searchTermSchema } from "@/schemas";
+import { document } from "postcss";
 
 export type TermType = {
     wordId: string;
@@ -13,11 +14,13 @@ export type TermType = {
 type Document = {
     id: string;
     postingList: TermType[];
+    pageInfo: any;
 };
 
 type ScoredDocument = {
     id: string;
     score: number;
+    pageInfo: any;
 };
 
 function calculateTermFrequencies(terms: string[]): Map<string, number> {
@@ -70,6 +73,7 @@ function vectorSpaceModel(
     queryTerms: string[],
     documents: Document[]
 ): ScoredDocument[] {
+    console.log(documents[0].pageInfo);
     // Calculate term frequencies for the query
     const queryTermFrequencies = calculateTermFrequencies(queryTerms);
 
@@ -92,7 +96,11 @@ function vectorSpaceModel(
             queryTermFrequencies,
             documentVector
         );
-        scoredDocuments.push({ id: documentId, score: cosineSimilarity });
+        scoredDocuments.push({
+            id: documentId,
+            score: cosineSimilarity,
+            pageInfo: document.pageInfo,
+        });
     });
 
     // Sort the documents by their cosine similarity scores in descending order

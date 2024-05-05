@@ -17,6 +17,20 @@ datasource db {
 model forwardTable {
   id String @id @map("_id")
   postingList Json[]
+
+  pageInfo pageInfo?
+  // pageInfo pageInfo @relation(fields: [id], references: [id])
+
+}
+model pageInfo {
+  id String @id @map("_id")
+  Title String
+  lastModifiedDate String
+  PageSize Int
+  LastCrawledDate String
+  ChildLink String[]
+  // forwardTable forwardTable?
+  forwardTable forwardTable @relation(fields: [id], references: [id])
 }
 
 model invertedTableBody {
@@ -29,11 +43,3 @@ model invertedTableTitle {
   postingList Json[]
 }
 
-model pageInfo {
-  id String @id @map("_id")
-  Title String
-  lastModifiedDate DateTime
-  PageSize Int
-  LastCrawledDate DateTime
-  ChildLink String[]
-}
