@@ -1,9 +1,5 @@
 'use client';
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/lXxx5Sziyvd
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
+
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
@@ -23,6 +19,9 @@ import {
 } from '@/components/ui/form';
 import SearchResultCard from "@/components/search-results";
 import { useRouter, useSearchParams } from "next/navigation";
+
+export const dynamic = 'force-dynamic';
+
 export default function Component() {
 
   const [isPending, startTransition] = useTransition();
