@@ -8,6 +8,8 @@ import { ExternalLink, LinkIcon } from 'lucide-react';
 import { pageInfo } from '@prisma/client';
 import { clampText } from '@/lib/text';
 import { TermType } from '@/actions/searchAction';
+import { Button } from './ui/button';
+import { useRouter } from 'next/navigation';
 // import { scoreToColor } from '@/lib/color';
 
 type Props = {
@@ -17,10 +19,11 @@ type Props = {
         pageInfo: pageInfo;
         keywords: TermType[];
     };
+    similarResultsLink: string;
 }
 
-const SearchResultCard = ({ data }: Props) => {
-
+const SearchResultCard = ({ data, similarResultsLink }: Props) => {
+    const router = useRouter();
     const scoreToColor = (score: number) => {
         switch (score) {
             case 0: return '!bg-score-0'
@@ -127,6 +130,10 @@ const SearchResultCard = ({ data }: Props) => {
         }
     }
 
+    const handleSimilarResults = () => {
+        router.replace(similarResultsLink);
+    }
+
     return (
         <article className="border w-full mx-auto border-gray-400 rounded-lg md:p-4 bg-white sm:py-3 py-4 px-2 " data-article-path="#" data-content-user-id="112962">
             <div role="presentation">
@@ -167,13 +174,16 @@ const SearchResultCard = ({ data }: Props) => {
                             </div>
                             <div className="flex items-center">
                                 <small className="mr-2 text-gray-600"> {data.pageInfo.PageSize} words</small>
-                                <button type="button" className="bg-gray-400 rounded text-sm px-3 py-2 text-current hover:text-black hover:bg-gray-500">
+                                <Button onClick={handleSimilarResults} variant={"secondary"} asChild type="button" className="bg-gray-400 rounded text-sm px-3 py-2 text-current hover:text-black hover:bg-gray-500">
+                                    {/* <Link href={similarResultsLink ?? "#"}> */}
                                     <span>See Similar Pages</span>
-                                </button>
+                                    {/* </Link> */}
+                                </Button>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <span className="flex w-fit rounded-lg hover:cursor-pointer items-center gap-1 py-1 pl-1 pr-2 text-gray-600 text-sm rounded hover:bg-gray-100 hover:text-black">
                     <LinkIcon className='w-4 h-4' />
                     {data.pageInfo.ChildLink.length}<span className="hidden md:inline">&nbsp;child links</span>

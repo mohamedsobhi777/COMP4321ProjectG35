@@ -115,6 +115,7 @@ export default function Component() {
             <SearchResultCard
               key={result.id}
               data={result}
+              similarResultsLink={`/?query=${query} ${(result.keywords.map((word: any) => word.wordId)).join(' ')}`}
             />
           ))}
         </div>
