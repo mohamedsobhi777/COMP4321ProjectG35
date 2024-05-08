@@ -2,6 +2,7 @@
 
 import { getAllDocs } from "@/data/docs";
 import { getTermInPageBody } from "@/data/searchTerm";
+import { StopStem } from "@/lib/stemmer";
 import { getMostFrequentTerms } from "@/lib/text";
 import { parseTokens } from "@/lib/token";
 import { SearchTermType, searchTermSchema } from "@/schemas";
@@ -75,7 +76,7 @@ function vectorSpaceModel(
     queryTerms: string[],
     documents: any[]
 ): ScoredDocument[] {
-    console.log(documents[0].pageInfo);
+    // console.log(documents[0].pageInfo);
     // Calculate term frequencies for the query
     const queryTermFrequencies = calculateTermFrequencies(queryTerms);
 
@@ -122,7 +123,13 @@ export const searchAction = async (values: SearchTermType) => {
     try {
         const { query: searchQuery } = validatedFields.data;
         // TODO: stem the keywords
-        const tokens = parseTokens(searchQuery);
+
+        // console.log("stemmed::", StopStem(searchQuery));
+
+        // return { results: [] };
+
+        // const tokens = parseTokens(searchQuery);
+        const tokens = StopStem(searchQuery);
         const allDocs = (await getAllDocs()) || [];
 
         const results = vectorSpaceModel(tokens, allDocs).filter(
