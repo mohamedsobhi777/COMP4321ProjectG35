@@ -28,6 +28,8 @@ public class Indexer {
     private Map<String, Posting> bodyFrequencyMap;
     public Map<String, Posting> combinedFrequencyMap;
 
+
+
     Indexer(String _url) {
         url = _url;
     }
