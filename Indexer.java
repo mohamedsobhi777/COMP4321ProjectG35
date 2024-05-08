@@ -3,17 +3,18 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOptions;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.beans.FilterBean;
 import org.htmlparser.beans.StringBean;
 import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.util.ParserException;
 
-import javax.swing.text.Document;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.*;
+
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.set;
 
 public class Indexer {
     private String url; // The url that are going to perform inverted index and forward index operation
@@ -133,26 +134,16 @@ public class Indexer {
     }
 
     public void extractWords() throws ParserException {
+        Bson filter = eq("_id", url);
+        org.bson.Document forwardIndexDoc = forwardTable.find(filter).first();
+        if(forwardIndexDoc != null){
+            System.out.println("Website update found");
+            updatePage();
+        }
 
         // Extract words and create frequency maps for title and body
         titleFrequencyMap = extractWordsAndCreateFrequencyMap(url, true);
         bodyFrequencyMap = extractWordsAndCreateFrequencyMap(url, false);
-
-//        System.out.println("Title Frequency Map:");
-//        for (Map.Entry<String, Posting> entry : titleFrequencyMap.entrySet()) {
-//            String stemmedWord = entry.getKey();
-//            Posting termInfo = entry.getValue();
-//            int termFrequency = termInfo.getTermFrequency();
-//            System.out.println(stemmedWord + ": " + termFrequency);
-//        }
-//
-//        System.out.println("\nBody Frequency Map:");
-//        for (Map.Entry<String, Posting> entry : bodyFrequencyMap.entrySet()) {
-//            String stemmedWord = entry.getKey();
-//            Posting termInfo = entry.getValue();
-//            int termFrequency = termInfo.getTermFrequency();
-//           System.out.println(stemmedWord + ": " + termFrequency);
-//        }
         // Add entries to the inverted index collection
         addToInvertedIndex(invertedTableTitle, titleFrequencyMap, true);
         addToInvertedIndex(invertedTableBody, bodyFrequencyMap, false);
@@ -161,14 +152,50 @@ public class Indexer {
 
     }
 
+    public void updatePage() throws ParserException{
+        // 1. Find the forward index document for the given URL
+        Bson filter = eq("_id", url);
+        org.bson.Document forwardIndexDoc = forwardTable.find(filter).first();
+
+        if (forwardIndexDoc != null) {
+            // 2. Loop through the postingList and update the inverted indexes
+            List<Document> postingList = (List<org.bson.Document>) forwardIndexDoc.get("postingList");
+            for (org.bson.Document posting : postingList) {
+                String wordId = posting.getString("wordId");
+
+                // Update the invertedTableBody
+                Bson filterWordID = eq("_id", wordId);
+                org.bson.Document invertedBodyDoc = invertedTableBody.find(filterWordID).first();
+                if (invertedBodyDoc != null) {
+                    List<org.bson.Document> bodyPostingList = (List<org.bson.Document>) invertedBodyDoc.get("postingList");
+                    bodyPostingList.removeIf(p -> p.getString("docId").equals(url));
+                    invertedTableBody.updateOne(filterWordID, set("postingList", bodyPostingList));
+                }
+
+                // Update the invertedTableTitle
+//                Bson titleFilter = eq("_id", wordId);
+                org.bson.Document invertedTitleDoc = invertedTableTitle.find(filterWordID).first();
+                if (invertedTitleDoc != null) {
+                    List<org.bson.Document> titlePostingList = (List<org.bson.Document>) invertedTitleDoc.get("postingList");
+                    titlePostingList.removeIf(p -> p.getString("docId").equals(url));
+                    invertedTableTitle.updateOne(filterWordID, set("postingList", titlePostingList));
+                }
+            }
+
+            // 3. Delete the forward index document
+            forwardTable.deleteOne(filter);
+        }
+    }
+
     public static void main(String[] arg) {
         try {
             String testURL = "https://www.cse.ust.hk/~kwtleung/COMP4321/ust_cse/PG.htm";
             Indexer invertedIndex = new Indexer(testURL);
-//            System.out.println("Starting from main: ");
+            System.out.println("Starting from main: ");
             invertedIndex.extractWords();
+//            invertedIndex.updatePage();
         } catch (ParserException e) {
-//            System.err.println(e.toString());
+            System.err.println(e.toString());
 
         }
     }
