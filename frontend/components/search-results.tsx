@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React from 'react'
 import { Badge } from './ui/badge';
 import { cn } from '@/lib/utils';
-import { ExternalLink, LinkIcon } from 'lucide-react';
+import { ExternalLink, File, LinkIcon } from 'lucide-react';
 import { pageInfo } from '@prisma/client';
 import { clampText } from '@/lib/text';
 import { TermType } from '@/actions/searchAction';
@@ -135,93 +135,73 @@ const SearchResultCard = ({ data, similarResultsLink }: Props) => {
         router.refresh();
     }
 
+
     return (
-        <article className="border w-full mx-auto border-gray-400 rounded-lg md:p-4 bg-white sm:py-3 py-4 px-2 " data-article-path="#" data-content-user-id="112962">
-            <div role="presentation">
-                <div>
-                    <div className="py-2">
-                        <Badge className={cn(scoreToColor(Math.round(data.score * 100)))} > Score: {data.score.toFixed(2)}</Badge>
-                    </div>
-                    <div className="">
-                        <h2 className="text-2xl font-bold mb-2 hover:text-blue-600 leading-7">
-                            <Link target='_blank' href={data.id} id="article-link-151230" className='flex items-center gap-1'>
-                                {clampText(data.pageInfo.Title, 64)} <ExternalLink className="w-4 h-4" />
+        <div className="bg-white rounded-lg shadow-md overflow-hidden w-full">
+            <div className="p-6">
+                <div className="flex items-center justify-between">
+                    {/* 
+                    <Link target='_blank' href={data.id} id="article-link-151230" className='flex items-center gap-1'>
+                    </Link> */}
+                    <Link target='_blank' href={data.id} id="article-link-151230" className='flex items-center gap-1 text-lg font-semibold text-gray-900'>
+                        {clampText(data.pageInfo.Title, 64)} <ExternalLink className="w-4 h-4" />
+
+                    </Link>
+
+                    <div className="flex items-center">
+                        <small className="mr-2 text-gray-600"> {data.pageInfo.PageSize} words</small>
+                        <Button
+                            asChild
+                            type="button"
+                            variant={"outlined"}
+                            // onClick={handleSimilarResults}
+                            className="rounded text-sm px-3 py-2 text-current"
+                        >
+                            <Link href={similarResultsLink ?? "#"}>
+                                <span>See Similar Pages</span>
                             </Link>
-                        </h2>
-                        Keywords (max 5):
-                        <div className="mb-2">
-                            {
-                                data.keywords.map(keyword => (
-                                    <span key={keyword.wordId} className="text-sm text-gray-600 p-1 hover:text-black">
-                                        <span className="text-opacity-50">#</span>
-                                        {keyword.wordId}({keyword.termFrequency})
-                                    </span>
-                                ))
-                            }
-                        </div>
-                        {/* <div className="mb-1 leading-6">…base;
-                            @<mark>tailwind</mark> components;
-                            @<mark>tailwind</mark> utilities;
-                            These are <mark>Tailwind</mark> directives...What is <mark>Tailwind</mark>?…
-                        </div> */}
-                        <div className="flex justify-between items-center">
-                            <div className="flex">
-                                {/* <a href="#" className="py-1 pl-1 pr-2 text-gray-600 text-sm rounded hover:bg-gray-100 hover:text-black">
-                                    <svg className="inline fill-current" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
-                                    </svg>
-                                    195<span className="hidden md:inline">&nbsp;reactions</span>
-                                </a> */}
-                            </div>
-                            <div className="flex items-center">
-                                <small className="mr-2 text-gray-600"> {data.pageInfo.PageSize} words</small>
-                                <Button
-                                    asChild
-                                    type="button"
-                                    variant={"link"}
-                                    // onClick={handleSimilarResults}
-                                    className="bg-gray-400 rounded text-sm px-3 py-2 text-current hover:text-black hover:bg-gray-500"
-                                >
-                                    <Link href={similarResultsLink ?? "#"}>
-                                        <span>See Similar Pages</span>
-                                    </Link>
-                                </Button>
-                            </div>
-                        </div>
+                        </Button>
                     </div>
                 </div>
-
-                <span className="flex w-fit rounded-lg hover:cursor-pointer items-center gap-1 py-1 pl-1 pr-2 text-gray-600 text-sm hover:bg-gray-100 hover:text-black">
-                    <LinkIcon className='w-4 h-4' />
-                    {data.pageInfo.ChildLink.length}<span className="hidden md:inline">&nbsp;child links</span>
-                </span>
-
-                <ul className='space-y-2'>
-                    {
-                        data.pageInfo.ChildLink.map(childPage => (
-                            <li key={childPage}>
-                                <Link target='_blank' href={childPage} className='hover:underline'>
-                                    {childPage}
-                                </Link>
-                            </li>
-                        ))
-                    }
-                    <li>
-
-                    </li>
-                </ul>
-
-                <p className="text-xs text-gray-600 hover:text-black">
+                <p className="text-xs pl-1 text-gray-600 hover:text-black">
                     last modified:  {data.pageInfo.lastModifiedDate}
                 </p>
-            </div>
-        </article >
-    )
+                <div className="mt-4 flex flex-wrap gap-2">
+                    Top Keywords:
+                    {
+                        data.keywords.map(keyword => (
+                            <Badge key={keyword.wordId} variant="secondary" className='!bg-[#F4F4F5] !text-[#18181B] border-none'>
+                                {keyword.wordId} ({keyword.termFrequency})
+                            </Badge>
 
-    return (
-        <div className='border-2 border-black p-4'>
-            {JSON.stringify(data)}
+                        ))
+                    }
+                </div>
+            </div>
+            <div className="border-t border-gray-200">
+                <div className="p-6 space-y-4">
+                    <h4 className="text-base font-semibold text-gray-900 ">{data.pageInfo.ChildLink.length} Children Pages</h4>
+                    <div className="grid gap-4">
+                        {
+                            data.pageInfo.ChildLink.map(childPage => (
+                                <div key={childPage} className="flex items-center justify-between">
+                                    <div className="flex gap-3">
+                                        <File className="w-5 h-5 text-gray-500 " />
+                                        <Link target="_blank" href={childPage} className="text-gray-900 hover:underline">
+                                            {childPage}
+                                        </Link>
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+            </div>
+            <div className="py-2 flex justify-end mx-4">
+                <Badge className={cn("border-none py-1", scoreToColor(Math.round(data.score * 100)))} > Score: {data.score.toFixed(2)}</Badge>
+            </div>
         </div>
+
     )
 }
 

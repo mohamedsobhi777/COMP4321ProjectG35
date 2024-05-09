@@ -17,7 +17,7 @@ const HeroSection = (props: Props) => {
             <div
                 // href="/"
                 onClick={props.resetSearch}
-                className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl hover:cursor-pointer">
                 <span className="text-blue-600 text-3xl">
                     COMP4321
                 </span>

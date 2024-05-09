@@ -21,6 +21,7 @@ import SearchResultCard from "@/components/search-results";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import HeroSection from "@/components/hero";
 import { MoonLoader, BounceLoader } from 'react-spinners'
+import { Badge } from "@/components/ui/badge";
 
 export const dynamic = 'force-dynamic';
 
@@ -155,10 +156,10 @@ export default function Component() {
 
       {
         results !== undefined && (
-          <div className="flex flex-col py-4">
-            <div>
+          <div className="flex flex-col py-4 max-w-5xl w-full">
+            <Badge className="mx-auto my-8 px-4 text-2xl !text-muted-foreground">
               {results.length} Results
-            </div>
+            </Badge>
             <div className="flex flex-col gap-4 w-full">
               {results.map((result) => (
                 <SearchResultCard
