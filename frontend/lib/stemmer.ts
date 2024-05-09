@@ -1,6 +1,7 @@
 import { stemmer } from "./porter";
 
 import { readFileSync } from "fs";
+import { stopWordsList } from "./stopwords";
 
 const stopWords = new Set<string>();
 
@@ -11,13 +12,7 @@ function isStopWord(str: string): boolean {
 export function StopStem(queryString: string): string[] {
     const split_queryString = queryString.split(/[^A-Za-z0-9]/);
 
-    const stopwordFile = readFileSync(
-        process.cwd() + "/public/stopwords.txt",
-        "utf8"
-    );
-
-    const stopwordLines = stopwordFile.split("\n");
-    for (const word of stopwordLines) {
+    for (const word of stopWordsList) {
         if (word.trim()) {
             // Check if the word is not empty after trimming
             stopWords.add(word.trim());
