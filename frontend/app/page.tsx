@@ -62,8 +62,9 @@ export default function Component() {
   useEffect(() => {
     if (query.length > 0) {
       onSubmit({ query });
+      form.setValue("query", query)
     }
-  }, [])
+  }, [query])
 
   return (
     <div className="flex flex-col items-center justify-center w-full min-h-[400px] px-4">

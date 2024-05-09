@@ -132,6 +132,7 @@ const SearchResultCard = ({ data, similarResultsLink }: Props) => {
 
     const handleSimilarResults = () => {
         router.replace(similarResultsLink);
+        router.refresh();
     }
 
     return (
@@ -174,17 +175,23 @@ const SearchResultCard = ({ data, similarResultsLink }: Props) => {
                             </div>
                             <div className="flex items-center">
                                 <small className="mr-2 text-gray-600"> {data.pageInfo.PageSize} words</small>
-                                <Button onClick={handleSimilarResults} variant={"secondary"} asChild type="button" className="bg-gray-400 rounded text-sm px-3 py-2 text-current hover:text-black hover:bg-gray-500">
-                                    {/* <Link href={similarResultsLink ?? "#"}> */}
-                                    <span>See Similar Pages</span>
-                                    {/* </Link> */}
+                                <Button
+                                    asChild
+                                    type="button"
+                                    variant={"link"}
+                                    // onClick={handleSimilarResults}
+                                    className="bg-gray-400 rounded text-sm px-3 py-2 text-current hover:text-black hover:bg-gray-500"
+                                >
+                                    <Link href={similarResultsLink ?? "#"}>
+                                        <span>See Similar Pages</span>
+                                    </Link>
                                 </Button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <span className="flex w-fit rounded-lg hover:cursor-pointer items-center gap-1 py-1 pl-1 pr-2 text-gray-600 text-sm rounded hover:bg-gray-100 hover:text-black">
+                <span className="flex w-fit rounded-lg hover:cursor-pointer items-center gap-1 py-1 pl-1 pr-2 text-gray-600 text-sm hover:bg-gray-100 hover:text-black">
                     <LinkIcon className='w-4 h-4' />
                     {data.pageInfo.ChildLink.length}<span className="hidden md:inline">&nbsp;child links</span>
                 </span>
