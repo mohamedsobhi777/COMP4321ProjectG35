@@ -14,7 +14,7 @@ public class testProgram {
         try {
 
             //Perform crawling + indexer with the crawler
-            crawler = new Crawler(testURL, 300);
+            crawler = new Crawler(testURL, 30);
             crawler.extractLinks();
         } catch (ParserException | IOException e) {
             e.printStackTrace();
