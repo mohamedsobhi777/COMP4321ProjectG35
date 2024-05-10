@@ -1,12 +1,9 @@
 "use server";
 
-import { getAllDocs } from "@/data/docs";
-import { getTermInPageBody } from "@/data/searchTerm";
+import { getBodyMatches, getTitleMatches } from "@/data/docs";
 import { StopStem } from "@/lib/stemmer";
 import { getMostFrequentTerms } from "@/lib/text";
-import { parseTokens } from "@/lib/token";
 import { SearchTermType, searchTermSchema } from "@/schemas";
-import { document } from "postcss";
 
 export type TermType = {
     wordId: string;
@@ -76,7 +73,6 @@ function vectorSpaceModel(
     queryTerms: string[],
     documents: any[]
 ): ScoredDocument[] {
-    // console.log(documents[0].pageInfo);
     // Calculate term frequencies for the query
     const queryTermFrequencies = calculateTermFrequencies(queryTerms);
 
@@ -122,22 +118,34 @@ export const searchAction = async (values: SearchTermType) => {
 
     try {
         const { query: searchQuery } = validatedFields.data;
-        // TODO: stem the keywords
 
-        // console.log("stemmed::", StopStem(searchQuery));
-
-        // return { results: [] };
-
-        // const tokens = parseTokens(searchQuery);
+        // const unstemmed_tokens = parseTokens(searchQuery);
         const tokens = StopStem(searchQuery);
-        const allDocs = (await getAllDocs()) || [];
 
-        const results = vectorSpaceModel(tokens, allDocs).filter(
+        const titleMatches = (await getTitleMatches(tokens)) || [];
+        const bodyMatches = (await getBodyMatches(tokens)) || [];
+
+        console.log("uns tokens::", titleMatches);
+
+        // matches in title are 2x as relevant (by duplicating the query terms)
+        const titleResults = vectorSpaceModel(
+            [...tokens, ...tokens],
+            titleMatches
+        ).filter((result) => result.score > 0);
+
+        const bodyResults = vectorSpaceModel(tokens, bodyMatches).filter(
             (result) => result.score > 0
         );
 
-        // console.log("res::", results);
-        return { results: results.slice(0, 50) || [] };
+        // combine results and remove duplicates
+        const allResults = [...titleResults, ...bodyResults];
+        const uniqueIds = Array.from(new Set(allResults.map((obj) => obj.id)));
+        const uniqueList = uniqueIds.map((id) =>
+            allResults.find((obj) => obj.id === id)
+        );
+
+        console.log("all res::", allResults);
+        return { results: uniqueList.slice(0, 50) || [] };
     } catch (e) {
         return { error: "Something went wrong!" };
     }
