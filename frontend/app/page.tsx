@@ -157,7 +157,7 @@ export default function Component() {
       {
         results !== undefined && (
           <div className="flex flex-col py-4 max-w-5xl w-full">
-            <Badge className="mx-auto my-8 px-4 text-2xl !text-muted-foreground">
+            <Badge className="mx-auto my-8 px-4 text-2xl !text-muted-foreground border-none">
               {results.length} Results
             </Badge>
             <div className="flex flex-col gap-4 w-full">

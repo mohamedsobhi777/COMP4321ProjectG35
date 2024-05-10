@@ -1,6 +1,10 @@
 "use server";
 
-import { getBodyMatches, getTitleMatches } from "@/data/docs";
+import {
+    getBodyMatches,
+    getTermsFrequencies,
+    getTitleMatches,
+} from "@/data/terms";
 import { StopStem } from "@/lib/stemmer";
 import { getMostFrequentTerms } from "@/lib/text";
 import { SearchTermType, searchTermSchema } from "@/schemas";
@@ -29,6 +33,35 @@ function calculateTermFrequencies(terms: string[]): Map<string, number> {
         termFrequencies.set(term, (termFrequencies.get(term) || 0) + 1);
     });
     return termFrequencies;
+}
+
+function normalizeTermFrequencies(
+    termFrequencies: Map<string, number>
+): Map<string, number> {
+    const maxFrequency = Math.max(...Array.from(termFrequencies.values()));
+    const normalizedTermFrequencies = new Map<string, number>();
+
+    termFrequencies.forEach((frequency, wordId) => {
+        normalizedTermFrequencies.set(wordId, frequency / maxFrequency);
+    });
+
+    return normalizedTermFrequencies;
+}
+
+function normalizeByIDF(
+    termFrequencies: Map<string, number>,
+    termGlobalFrequencies: Map<string, number>
+): Map<string, number> {
+    const normalizedTermFrequencies = new Map<string, number>();
+
+    termFrequencies.forEach((frequency, wordId) => {
+        normalizedTermFrequencies.set(
+            wordId,
+            frequency / (termGlobalFrequencies.get("wordId") ?? 1)
+        );
+    });
+
+    return normalizedTermFrequencies;
 }
 
 function calculateDocFrequencies(
@@ -71,7 +104,8 @@ function calculateCosineSimilarity(
 
 function vectorSpaceModel(
     queryTerms: string[],
-    documents: any[]
+    documents: any[],
+    termGlobalFrequencies: Map<string, number>
 ): ScoredDocument[] {
     // Calculate term frequencies for the query
     const queryTermFrequencies = calculateTermFrequencies(queryTerms);
@@ -81,7 +115,13 @@ function vectorSpaceModel(
     documents.forEach((document) => {
         documentTermFrequencies.set(
             document.id,
-            calculateDocFrequencies(document.postingList)
+            normalizeByIDF(
+                // normalize by max freq within doc
+                normalizeTermFrequencies(
+                    calculateDocFrequencies(document.postingList)
+                ),
+                termGlobalFrequencies
+            )
         );
     });
 
@@ -125,17 +165,21 @@ export const searchAction = async (values: SearchTermType) => {
         const titleMatches = (await getTitleMatches(tokens)) || [];
         const bodyMatches = (await getBodyMatches(tokens)) || [];
 
-        console.log("uns tokens::", titleMatches);
+        const termGlobalFrequencies: Map<string, number> =
+            await getTermsFrequencies(tokens);
 
         // matches in title are 2x as relevant (by duplicating the query terms)
         const titleResults = vectorSpaceModel(
             [...tokens, ...tokens],
-            titleMatches
+            titleMatches,
+            termGlobalFrequencies
         ).filter((result) => result.score > 0);
 
-        const bodyResults = vectorSpaceModel(tokens, bodyMatches).filter(
-            (result) => result.score > 0
-        );
+        const bodyResults = vectorSpaceModel(
+            tokens,
+            bodyMatches,
+            termGlobalFrequencies
+        ).filter((result) => result.score > 0);
 
         // combine results and remove duplicates
         const allResults = [...titleResults, ...bodyResults];
