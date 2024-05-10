@@ -5,12 +5,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link";
 import { useLocalStorage } from 'usehooks-ts';
 
-export const initialHistoryQueries = [
-    {
-        query: "how to pass COMP4321 (example)?",
-        timestamp: new Date()
-    }
-]
+
 
 export type QueryType = {
     query: string;
@@ -18,7 +13,7 @@ export type QueryType = {
 }
 
 export default function HistoryPage() {
-    const [historyQueries, setHistoryQueries] = useLocalStorage<QueryType[]>('historyQueries', initialHistoryQueries, { initializeWithValue: false })
+    const [historyQueries, setHistoryQueries] = useLocalStorage<QueryType[]>('historyQueries', [], { initializeWithValue: false })
 
     const handleRemove = (_i: number) => {
         setHistoryQueries((prev) => prev.filter((item, i) => i !== _i));
