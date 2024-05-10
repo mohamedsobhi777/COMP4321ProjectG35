@@ -60,7 +60,7 @@ public class Indexer {
                 String stemmedWord = stopStem.stem(input); // stemming the word with porter's algorithm
 
 //                System.out.println("Stemmed version of \"" + input + "\" is: " + stemmedWord);
-                if(Objects.equals(stemmedWord, " ")|| stopStem.isStopWord(stemmedWord)){
+                if(Objects.equals(stemmedWord, " ")){
                     continue;
                 }
 
