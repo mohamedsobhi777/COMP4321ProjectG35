@@ -11,6 +11,7 @@ export const getAllDocs = async () => {
                         PageSize: true,
                         LastCrawledDate: true,
                         ChildLink: true,
+                        parentLink: true,
                     },
                 },
             },

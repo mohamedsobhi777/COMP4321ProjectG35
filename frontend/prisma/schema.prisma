@@ -9,37 +9,37 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+  provider     = "mongodb"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model forwardTable {
-  id String @id @map("_id")
+  id          String @id @map("_id")
   postingList Json[]
 
   pageInfo pageInfo?
   // pageInfo pageInfo @relation(fields: [id], references: [id])
-
 }
+
 model pageInfo {
-  id String @id @map("_id")
-  Title String
+  id               String       @id @map("_id")
+  Title            String
   lastModifiedDate String
-  PageSize Int
-  LastCrawledDate String
-  ChildLink String[]
+  PageSize         Int
+  LastCrawledDate  String
+  ChildLink        String[]
+  parentLink       String[]
   // forwardTable forwardTable?
-  forwardTable forwardTable @relation(fields: [id], references: [id])
+  forwardTable     forwardTable @relation(fields: [id], references: [id])
 }
 
 model invertedTableBody {
-  id String @id @map("_id")
+  id          String @id @map("_id")
   postingList Json[]
 }
 
 model invertedTableTitle {
-  id String @id @map("_id")
+  id          String @id @map("_id")
   postingList Json[]
 }
-

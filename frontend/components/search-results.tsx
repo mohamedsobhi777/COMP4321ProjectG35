@@ -180,6 +180,25 @@ const SearchResultCard = ({ data, similarResultsLink }: Props) => {
             </div>
             <div className="border-t border-gray-200">
                 <div className="p-6 space-y-4">
+                    <h4 className="text-base font-semibold text-gray-900 ">{data.pageInfo.parentLink.length} Parent Pages</h4>
+                    <div className="grid gap-4">
+                        {
+                            data.pageInfo.parentLink.map(parentPage => (
+                                <div key={parentPage} className="flex items-center justify-between">
+                                    <div className="flex gap-3">
+                                        <File className="w-5 h-5 text-gray-500 " />
+                                        <Link target="_blank" href={parentPage} className="text-gray-900 hover:underline">
+                                            {parentPage}
+                                        </Link>
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+            </div>
+            <div className="border-t border-gray-200">
+                <div className="p-6 space-y-4">
                     <h4 className="text-base font-semibold text-gray-900 ">{data.pageInfo.ChildLink.length} Children Pages</h4>
                     <div className="grid gap-4">
                         {
