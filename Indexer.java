@@ -10,7 +10,6 @@ import org.htmlparser.beans.FilterBean;
 import org.htmlparser.beans.StringBean;
 import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.util.ParserException;
-
 import java.util.*;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -61,6 +60,9 @@ public class Indexer {
                 String stemmedWord = stopStem.stem(input); // stemming the word with porter's algorithm
 
 //                System.out.println("Stemmed version of \"" + input + "\" is: " + stemmedWord);
+                if(Objects.equals(stemmedWord, " ")|| stopStem.isStopWord(stemmedWord)){
+                    continue;
+                }
 
                 Posting postingInfo = frequencyMap.getOrDefault(stemmedWord, new Posting()); // Create and entry if the word does not exist or get the Map if the date exist
                 postingInfo.incrementTermFrequency(); // increment the word frequency
