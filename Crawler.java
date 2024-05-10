@@ -120,7 +120,6 @@ public class Crawler {
                 URL url = new URL(currentRetrievedURL);                         //Get the last modified date of the web page
                 URLConnection connection = url.openConnection();
                 String lastModified = connection.getHeaderField("Last-Modified");
-                lastModified += "1";
                 if(lastModified == null){
                     lastModified = connection.getDate() + "";
                 }
