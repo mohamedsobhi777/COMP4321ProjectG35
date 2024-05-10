@@ -2,7 +2,7 @@
 import React from 'react'
 import { Button, buttonVariants } from './ui/button'
 import Link from 'next/link'
-import { Search } from 'lucide-react'
+import { History, Search } from 'lucide-react'
 import { useRouter } from 'next/navigation';
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 
 const HeroSection = (props: Props) => {
     const router = useRouter();
-    
+
     return (
         <div className="py-20 pb-10 mx-auto text-center flex flex-col items-center max-w-3xl">
             <div
@@ -36,6 +36,13 @@ const HeroSection = (props: Props) => {
                     Mohamed
                 </Link>
             </p>
+            <div className='py-4'>
+                <Button variant={"secondary"} asChild>
+                    <Link href="/history">
+                        <History className='w-5 h-5 mr-1' /> Show Search History
+                    </Link>
+                </Button>
+            </div>
         </div>
     )
 }

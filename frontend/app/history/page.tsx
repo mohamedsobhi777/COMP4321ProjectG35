@@ -2,7 +2,9 @@
 'use client';
 
 import { Button } from "@/components/ui/button"
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 import { useLocalStorage } from 'usehooks-ts';
 
 
@@ -15,13 +17,21 @@ export type QueryType = {
 export default function HistoryPage() {
     const [historyQueries, setHistoryQueries] = useLocalStorage<QueryType[]>('historyQueries', [], { initializeWithValue: false })
 
-    const handleRemove = (_i: number) => {
+    const handleRemove = (title: string, _i: number) => {
+        toast.success(`Deleted '${title}' successfully!`)
         setHistoryQueries((prev) => prev.filter((item, i) => i !== _i));
     }
 
     return (
         <div className="w-full  bg-white p-8">
 
+            <div className='py-4'>
+                <Button variant={"secondary"} asChild>
+                    <Link href="/">
+                        <ArrowLeft className='w-5 h-5 mr-1' /> Back to Search
+                    </Link>
+                </Button>
+            </div>
 
             <div className="py-20 pb-2 mx-auto text-center  items-center max-w-3xl">
                 <Link
@@ -35,7 +45,6 @@ export default function HistoryPage() {
                     Search Engine
                 </Link>
             </div>
-
             <div className="flex flex-col items-center justify-center">
                 <h1 className="text-2xl font-semibold text-gray-900 mb-6">Your Search History</h1>
                 <div className="w-full max-w-md mt-8">
@@ -51,7 +60,7 @@ export default function HistoryPage() {
                                         <p className="text-sm text-gray-900 mb-1">{query.query}</p>
                                         <p className="text-xs text-gray-500">{query.timestamp.toString()}</p>
                                     </div>
-                                    <Button onClick={handleRemove.bind(null, i)} size="sm" variant="ghost">
+                                    <Button onClick={() => handleRemove(query.query, i)} size="sm" variant="ghost">
                                         Remove
                                     </Button>
                                 </div>

@@ -72,13 +72,17 @@ export default function Component() {
 
   const onSubmit = (values: SearchTermType) => {
     startTransition(() => {
-      setHistoryQueries((prev) => [{ query: values.query, timestamp: new Date() }, ...prev])
       router.replace(`/?query=${values.query}`, { scroll: false });
       searchAction(values)
         .then((data) => {
           if (data.error) {
             setError(data.error);
           }
+          setHistoryQueries((prev) => {
+            console.log("prev:", prev)
+            if (prev.length && prev[0].query === values.query) return prev;
+            return [{ query: values.query, timestamp: new Date() }, ...prev]
+          })
           if (data.results) {
             // toast.success(data.success)
             setResults(data.results);
@@ -143,16 +147,10 @@ export default function Component() {
                       </Button>
                     </div>
                   </FormControl>
-                  {/* <FormDescription>
-                    This is the title of your artwork
-                  </FormDescription> */}
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {/* <Button type="submit" disabled={isPending} className="text-white bg-black text-sm px-4 h-full border-2 border-black">
-              <Search className="" />
-            </Button> */}
           </div>
         </form>
       </Form>

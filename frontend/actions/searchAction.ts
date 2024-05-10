@@ -188,7 +188,6 @@ export const searchAction = async (values: SearchTermType) => {
             allResults.find((obj) => obj.id === id)
         );
 
-        console.log("all res::", allResults);
         return { results: uniqueList.slice(0, 50) || [] };
     } catch (e) {
         return { error: "Something went wrong!" };
