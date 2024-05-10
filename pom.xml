@@ -25,7 +25,7 @@
             <artifactId>htmlparser</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/src/htmlparser.jar</systemPath>
+            <systemPath>${project.basedir}/src/main/java/IRUtilities/htmlparser.jar</systemPath>
         </dependency>
     </dependencies>
 </project>
