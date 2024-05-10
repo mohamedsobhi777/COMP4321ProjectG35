@@ -22,6 +22,8 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import HeroSection from "@/components/hero";
 import { MoonLoader, BounceLoader } from 'react-spinners'
 import { Badge } from "@/components/ui/badge";
+import { useLocalStorage } from "usehooks-ts";
+import { QueryType, initialHistoryQueries } from "./history/page";
 
 export const dynamic = 'force-dynamic';
 
@@ -30,6 +32,7 @@ export default function Component() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>();
   const [results, setResults] = useState<any[] | undefined>([]);
+  const [historyQueries, setHistoryQueries] = useLocalStorage<QueryType[]>('historyQueries', initialHistoryQueries, { initializeWithValue: false })
 
   const searchParams = useSearchParams()
   const router = useRouter();
@@ -67,9 +70,9 @@ export default function Component() {
     replace(newUrl)
   }
 
-
   const onSubmit = (values: SearchTermType) => {
     startTransition(() => {
+      setHistoryQueries((prev) => [{ query: values.query, timestamp: new Date() }, ...prev])
       router.replace(`/?query=${values.query}`, { scroll: false });
       searchAction(values)
         .then((data) => {
